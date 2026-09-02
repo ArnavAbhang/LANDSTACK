@@ -1,0 +1,46 @@
+{
+  "type": "FeatureCollection",
+  "name": "restriction_zones",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.84949999999999,
+              18.52925
+            ],
+            [
+              73.8499,
+              18.52925
+            ],
+            [
+              73.8499,
+              18.53075
+            ],
+            [
+              73.84949999999999,
+              18.53075
+            ],
+            [
+              73.84949999999999,
+              18.52925
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Flood / Environmental Restriction",
+        "restriction": "FLOOD_100_YEAR"
+      }
+    }
+  ]
+}

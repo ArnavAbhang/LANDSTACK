@@ -1,0 +1,3 @@
+document_id,ulpin,document_type,document_number,document_date,ocr_survey_number,database_survey_number,consistency_status,confidence
+DOC-MH-003,MH-000003,Sale Deed,SD-003,2025-04-10,123/4,123/5,MISMATCH,0.92
+DOC-MH-001,MH-000001,7/12 Extract,712-001,2026-01-10,123/4,123/4,MATCH,0.99

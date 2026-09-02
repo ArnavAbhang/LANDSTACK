@@ -1,0 +1,50 @@
+{
+  "type": "FeatureCollection",
+  "name": "utility_networks",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            73.8494,
+            18.5295
+          ],
+          [
+            73.8508,
+            18.5307
+          ]
+        ]
+      },
+      "properties": {
+        "type": "WATER"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            73.8495,
+            18.5309
+          ],
+          [
+            73.8509,
+            18.5301
+          ]
+        ]
+      },
+      "properties": {
+        "type": "ELECTRICITY"
+      }
+    }
+  ]
+}

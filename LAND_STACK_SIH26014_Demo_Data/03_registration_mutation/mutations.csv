@@ -1,0 +1,5 @@
+mutation_id,ulpin,mutation_no,mutation_date,from_owner,to_owner,reason,registration_linked,status
+MUT-MH-003-1,MH-000003,FERFAR-ANOM-01,2021-01-15,Previous Owner,Owner MA-03,Record update,YES,RECORDED
+MUT-MH-003-2,MH-000003,FERFAR-ANOM-02,2022-02-15,Previous Owner,Owner MA-03,Record update,YES,RECORDED
+MUT-MH-003-3,MH-000003,FERFAR-ANOM-03,2023-03-15,Previous Owner,Owner MA-03,Record update,YES,RECORDED
+MUT-MH-003-4,MH-000003,FERFAR-ANOM-04,2024-04-15,Previous Owner,Owner MA-03,Record update,NO,RECORDED

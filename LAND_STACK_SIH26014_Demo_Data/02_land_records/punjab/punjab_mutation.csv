@@ -1,0 +1,6 @@
+ulpin,mutation_no,date,from_owner,to_owner,reason,status
+PB-000001,MUT-PB-0001,2025-06-15,Previous Owner,Owner PU-01,Inheritance,Recorded
+PB-000002,MUT-PB-0002,2025-06-15,Previous Owner,Owner PU-02,Inheritance,Recorded
+PB-000003,MUT-PB-0003,2025-06-15,Previous Owner,Owner PU-03,Inheritance,Recorded
+PB-000004,MUT-PB-0004,2025-06-15,Previous Owner,Owner PU-04,Inheritance,Recorded
+PB-000005,MUT-PB-0005,2025-06-15,Previous Owner,Owner PU-05,Inheritance,Recorded

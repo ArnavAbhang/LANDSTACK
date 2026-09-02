@@ -1,0 +1,4 @@
+registration_id,ulpin,document_type,registration_date,seller,buyer,consideration_rupees,sub_registrar,status
+REG-MH-0001,MH-000001,Sale Deed,2024-08-12,Seller A,Owner MA-01,1850000,SRO Haveli,REGISTERED
+REG-MH-0002,MH-000003,Sale Deed,2025-04-10,Previous Owner,Owner MA-03,2400000,SRO Haveli,REGISTERED
+REG-TN-0001,TN-000001,Sale Deed,2025-02-14,Seller TN,Owner TA-01,1600000,SRO Kanchipuram,REGISTERED

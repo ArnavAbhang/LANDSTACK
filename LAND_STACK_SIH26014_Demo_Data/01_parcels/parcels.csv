@@ -1,0 +1,11 @@
+ulpin,state,district,taluka,village,surveyNo,ownerName,areaHectare,landType,landUse,stateParcelId
+MH-27-PUN-000001,Maharashtra,Pune,Haveli,Village,123/4,Rajendra Patil,2.45,Agricultural,Agricultural,MH-PAR-0001
+MH-27-PUN-000002,Maharashtra,Pune,Haveli,Village,124/2,Sneha Kulkarni,1.82,Agricultural,Agricultural,MH-PAR-0002
+MH-27-PUN-000003,Maharashtra,Pune,Haveli,Village,125/1,Vijay Jadhav,3.1,Agricultural,Agricultural,MH-PAR-0003
+MH-27-PUN-000004,Maharashtra,Pune,Haveli,Village,126/3,Meena Shinde,1.36,Residential,Residential,MH-PAR-0004
+MH-27-PUN-000005,Maharashtra,Pune,Haveli,Village,127/2,Sanjay Deshmukh,4.2,Agricultural,Agricultural,MH-PAR-0005
+MH-27-PUN-000006,Maharashtra,Pune,Haveli,Village,128/1,Pooja Pawar,2.18,Residential,Residential,MH-PAR-0006
+MH-27-PUN-000007,Maharashtra,Pune,Haveli,Village,129/4,Amit Bhosale,1.74,Commercial,Commercial,MH-PAR-0007
+MH-27-PUN-000008,Maharashtra,Pune,Haveli,Village,130/2,Neha Gaikwad,3.65,Agricultural,Agricultural,MH-PAR-0008
+MH-27-PUN-000009,Maharashtra,Pune,Haveli,Village,131/1,Rohit More,2.05,Residential,Residential,MH-PAR-0009
+MH-27-PUN-000010,Maharashtra,Pune,Haveli,Village,132/3,Kavita Chavan,2.92,Agricultural,Agricultural,MH-PAR-0010

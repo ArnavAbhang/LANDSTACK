@@ -1,0 +1,46 @@
+{
+  "type": "FeatureCollection",
+  "name": "zoning_zones",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.8498,
+              18.52985
+            ],
+            [
+              73.8506,
+              18.52985
+            ],
+            [
+              73.8506,
+              18.53055
+            ],
+            [
+              73.8498,
+              18.53055
+            ],
+            [
+              73.8498,
+              18.52985
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "R1 Residential",
+        "zone": "R1"
+      }
+    }
+  ]
+}

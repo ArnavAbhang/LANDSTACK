@@ -1,0 +1,4 @@
+connection_id,ulpin,utility_type,consumer_id,status,outstanding_rupees,last_bill_date,service_issue
+WATER-003,MH-000003,WATER,WAT-003,CONNECTED,8500,2026-07-31,Repeated service complaint
+POWER-003,MH-000003,ELECTRICITY,ELEC-003,CONNECTED,2400,2026-07-31,NONE
+WATER-001,MH-000001,WATER,WAT-001,CONNECTED,0,2026-07-31,NONE

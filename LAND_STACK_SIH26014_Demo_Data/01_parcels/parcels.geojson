@@ -1,0 +1,442 @@
+{
+  "type": "FeatureCollection",
+  "name": "Maharashtra Parcel Dataset",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.84989494497796,
+              18.530148622886387
+            ],
+            [
+              73.85009982009751,
+              18.53014146848956
+            ],
+            [
+              73.85010505502203,
+              18.530291377113613
+            ],
+            [
+              73.84990017990248,
+              18.53029853151044
+            ],
+            [
+              73.84989494497796,
+              18.530148622886387
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000001",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "123/4",
+        "ownerName": "Rajendra Patil",
+        "areaHectare": 2.45,
+        "landType": "Agricultural",
+        "landUse": "Agricultural",
+        "stateParcelId": "MH-PAR-0001"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.8498995154586,
+              18.53035425119861
+            ],
+            [
+              73.85012528971079,
+              18.530398137267547
+            ],
+            [
+              73.85010048454139,
+              18.530525748801395
+            ],
+            [
+              73.8498747102892,
+              18.530481862732458
+            ],
+            [
+              73.8498995154586,
+              18.53035425119861
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000002",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "124/2",
+        "ownerName": "Sneha Kulkarni",
+        "areaHectare": 1.82,
+        "landType": "Agricultural",
+        "landUse": "Agricultural",
+        "stateParcelId": "MH-PAR-0002"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85020643124227,
+              18.530177190041453
+            ],
+            [
+              73.85042308894793,
+              18.53021539264054
+            ],
+            [
+              73.85039356875774,
+              18.53038280995855
+            ],
+            [
+              73.85017691105207,
+              18.530344607359464
+            ],
+            [
+              73.85020643124227,
+              18.530177190041453
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000003",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "125/1",
+        "ownerName": "Vijay Jadhav",
+        "areaHectare": 3.1,
+        "landType": "Agricultural",
+        "landUse": "Agricultural",
+        "stateParcelId": "MH-PAR-0003"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.84990618552676,
+              18.530802992892443
+            ],
+            [
+              73.85010965748786,
+              18.53082797610784
+            ],
+            [
+              73.85009381447323,
+              18.530957007107556
+            ],
+            [
+              73.84989034251213,
+              18.53093202389216
+            ],
+            [
+              73.84990618552676,
+              18.530802992892443
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000004",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "126/3",
+        "ownerName": "Meena Shinde",
+        "areaHectare": 1.36,
+        "landType": "Residential",
+        "landUse": "Residential",
+        "stateParcelId": "MH-PAR-0004"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85012372349507,
+              18.529946108958956
+            ],
+            [
+              73.85035022927826,
+              18.529906169878092
+            ],
+            [
+              73.8503762765049,
+              18.530053891041046
+            ],
+            [
+              73.85014977072171,
+              18.53009383012191
+            ],
+            [
+              73.85012372349507,
+              18.529946108958956
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000005",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "127/2",
+        "ownerName": "Sanjay Deshmukh",
+        "areaHectare": 4.2,
+        "landType": "Agricultural",
+        "landUse": "Agricultural",
+        "stateParcelId": "MH-PAR-0005"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85016352517903,
+              18.53015037884418
+            ],
+            [
+              73.85034327849527,
+              18.530159799316305
+            ],
+            [
+              73.85033647482095,
+              18.53028962115582
+            ],
+            [
+              73.8501567215047,
+              18.530280200683695
+            ],
+            [
+              73.85016352517903,
+              18.53015037884418
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000006",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "128/1",
+        "ownerName": "Pooja Pawar",
+        "areaHectare": 2.18,
+        "landType": "Residential",
+        "landUse": "Residential",
+        "stateParcelId": "MH-PAR-0006"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85013240054587,
+              18.53039202481483
+            ],
+            [
+              73.85033131116975,
+              18.53034243082623
+            ],
+            [
+              73.8503675994541,
+              18.530487975185174
+            ],
+            [
+              73.85016868883022,
+              18.530537569173774
+            ],
+            [
+              73.85013240054587,
+              18.53039202481483
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000007",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "129/4",
+        "ownerName": "Amit Bhosale",
+        "areaHectare": 1.74,
+        "landType": "Commercial",
+        "landUse": "Commercial",
+        "stateParcelId": "MH-PAR-0007"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85013388310863,
+              18.530597016926556
+            ],
+            [
+              73.85036384807852,
+              18.530593002873076
+            ],
+            [
+              73.85036611689135,
+              18.530722983073446
+            ],
+            [
+              73.85013615192146,
+              18.530726997126926
+            ],
+            [
+              73.85013388310863,
+              18.530597016926556
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000008",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "130/2",
+        "ownerName": "Neha Gaikwad",
+        "areaHectare": 3.65,
+        "landType": "Agricultural",
+        "landUse": "Agricultural",
+        "stateParcelId": "MH-PAR-0008"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85017756009273,
+              18.53078792687777
+            ],
+            [
+              73.85035362666088,
+              18.53082535098212
+            ],
+            [
+              73.85032243990725,
+              18.53097207312223
+            ],
+            [
+              73.8501463733391,
+              18.53093464901788
+            ],
+            [
+              73.85017756009273,
+              18.53078792687777
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000009",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "131/1",
+        "ownerName": "Rohit More",
+        "areaHectare": 2.05,
+        "landType": "Residential",
+        "landUse": "Residential",
+        "stateParcelId": "MH-PAR-0009"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85039222492016,
+              18.529944180808258
+            ],
+            [
+              73.85059644483327,
+              18.529926313880992
+            ],
+            [
+              73.85060777507984,
+              18.530055819191745
+            ],
+            [
+              73.85040355516672,
+              18.53007368611901
+            ],
+            [
+              73.85039222492016,
+              18.529944180808258
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "ulpin": "MH-27-PUN-000010",
+        "state": "Maharashtra",
+        "district": "Pune",
+        "taluka": "Haveli",
+        "village": "Village",
+        "surveyNo": "132/3",
+        "ownerName": "Kavita Chavan",
+        "areaHectare": 2.92,
+        "landType": "Agricultural",
+        "landUse": "Agricultural",
+        "stateParcelId": "MH-PAR-0010"
+      }
+    }
+  ]
+}

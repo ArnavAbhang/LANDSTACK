@@ -1,0 +1,40 @@
+{
+  "notice": "sample data",
+  "layers": [
+    {
+      "name": "parcels",
+      "file": "01_parcels/parcels.geojson",
+      "role": "BASE"
+    },
+    {
+      "name": "land_use_zones",
+      "file": "05_planning_restrictions/land_use_zones.geojson",
+      "role": "ESSENTIAL"
+    },
+    {
+      "name": "zoning_zones",
+      "file": "05_planning_restrictions/zoning_zones.geojson",
+      "role": "ESSENTIAL"
+    },
+    {
+      "name": "master_plan_zones",
+      "file": "05_planning_restrictions/master_plan_zones.geojson",
+      "role": "ESSENTIAL"
+    },
+    {
+      "name": "restriction_zones",
+      "file": "05_planning_restrictions/restriction_zones.geojson",
+      "role": "ADDITIONAL"
+    },
+    {
+      "name": "utility_networks",
+      "file": "05_planning_restrictions/utility_networks.geojson",
+      "role": "ADDITIONAL"
+    },
+    {
+      "name": "road_networks",
+      "file": "05_planning_restrictions/road_networks.geojson",
+      "role": "ADDITIONAL"
+    }
+  ]
+}

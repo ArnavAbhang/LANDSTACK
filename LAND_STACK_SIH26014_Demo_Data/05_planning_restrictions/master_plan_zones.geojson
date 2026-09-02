@@ -1,0 +1,46 @@
+{
+  "type": "FeatureCollection",
+  "name": "master_plan_zones",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.85017500000001,
+              18.52955
+            ],
+            [
+              73.850425,
+              18.52955
+            ],
+            [
+              73.850425,
+              18.53105
+            ],
+            [
+              73.85017500000001,
+              18.53105
+            ],
+            [
+              73.85017500000001,
+              18.52955
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "30m Ring Road Reservation",
+        "reservation": "RING_ROAD_30M"
+      }
+    }
+  ]
+}

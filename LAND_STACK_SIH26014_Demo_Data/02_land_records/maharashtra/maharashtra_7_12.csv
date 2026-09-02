@@ -1,0 +1,6 @@
+ulpin,khatedar_name,survey_no,area_hectare,land_type,cultivator,tenure,remarks
+MH-27-PUN-000001,Rajendra Patil,123/4,0.97,Residential,Owner MA-01,Occupancy Class I,sample 
+MH-27-PUN-000002,Sneha Kulkarni,124/2,1.14,Commercial,Owner MA-02,Occupancy Class I,sample 
+MH-27-PUN-000003,Vijay Jadhav,125/1,1.31,Agricultural,Owner MA-03,Occupancy Class I,sample 
+MH-27-PUN-000004,Meena Shinde,126/3,1.48,Residential,Owner MA-04,Occupancy Class I,sample 
+MH-27-PUN-000005,Sanjay Deshmukh,127/2,1.65,Commercial,Owner MA-05,Occupancy Class I,sample 

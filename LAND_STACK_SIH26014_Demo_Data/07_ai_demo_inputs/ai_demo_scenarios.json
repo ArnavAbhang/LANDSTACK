@@ -1,0 +1,45 @@
+{
+  "notice": "sample DATA \u2014 NOT OFFICIAL GOVERNMENT DATA",
+  "scenarios": [
+    {
+      "ulpin": "MH-000001",
+      "scenario": "LOW_RISK",
+      "expectedRiskScore": 12,
+      "expectedRiskLevel": "LOW"
+    },
+    {
+      "ulpin": "MH-000003",
+      "scenario": "MULTI_RISK",
+      "expectedRiskScore": 82,
+      "expectedRiskLevel": "HIGH",
+      "factors": [
+        {
+          "name": "Active dispute",
+          "impact": 25
+        },
+        {
+          "name": "Boundary conflict",
+          "impact": 22
+        },
+        {
+          "name": "Tax arrears",
+          "impact": 15
+        },
+        {
+          "name": "Frequent mutation",
+          "impact": 12
+        },
+        {
+          "name": "Document inconsistency",
+          "impact": 8
+        }
+      ]
+    },
+    {
+      "ulpin": "MH-000004",
+      "scenario": "SATELLITE_CHANGE",
+      "expectedChangeAreaHa": 0.14,
+      "confidence": 0.89
+    }
+  ]
+}

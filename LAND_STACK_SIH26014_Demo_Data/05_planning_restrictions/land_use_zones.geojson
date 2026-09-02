@@ -1,0 +1,46 @@
+{
+  "type": "FeatureCollection",
+  "name": "land_use_zones",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              73.84939999999999,
+              18.529300000000003
+            ],
+            [
+              73.8506,
+              18.529300000000003
+            ],
+            [
+              73.8506,
+              18.5307
+            ],
+            [
+              73.84939999999999,
+              18.5307
+            ],
+            [
+              73.84939999999999,
+              18.529300000000003
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Agricultural Zone",
+        "class": "AGRICULTURAL"
+      }
+    }
+  ]
+}

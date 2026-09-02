@@ -1,0 +1,21 @@
+-- Land Stack Migration V15: External Data Source Registry Table
+
+CREATE TABLE IF NOT EXISTS external_data_sources (
+    id VARCHAR(50) PRIMARY KEY,
+    source_id VARCHAR(50) UNIQUE NOT NULL,
+    source_name VARCHAR(150) NOT NULL,
+    state_code VARCHAR(10) NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    source_type VARCHAR(50) NOT NULL, -- LAND_RECORDS, CADASTRAL_GIS, REGISTRATION, PROPERTY_TAX, ZONING, MASTER_PLAN, UTILITY, SATELLITE, OTHER
+    protocol VARCHAR(30) NOT NULL, -- REST, WMS, WFS, WMTS, GEOJSON, CSV, SHAPEFILE, POSTGIS, FILE_UPLOAD
+    endpoint VARCHAR(255),
+    authentication_type VARCHAR(30) DEFAULT 'NONE', -- NONE, API_KEY, OAUTH2, BASIC, CERTIFICATE, INTERNAL, PROTOTYPE
+    schema_version VARCHAR(20) DEFAULT '1.0.0',
+    status VARCHAR(30) DEFAULT 'READY', -- CONNECTED, AVAILABLE, READY, SIMULATED, OFFLINE
+    last_sync_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_ext_sources_state ON external_data_sources(state_code);
+CREATE INDEX IF NOT EXISTS idx_ext_sources_status ON external_data_sources(status);

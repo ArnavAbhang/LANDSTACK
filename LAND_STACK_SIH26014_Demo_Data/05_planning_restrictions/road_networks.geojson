@@ -1,0 +1,31 @@
+{
+  "type": "FeatureCollection",
+  "name": "road_networks",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            73.8493,
+            18.5294
+          ],
+          [
+            73.851,
+            18.531
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Highway 130"
+      }
+    }
+  ]
+}
