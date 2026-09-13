@@ -295,6 +295,27 @@ def calculate_unified_parcel_risk(payload: Dict[str, Any]):
             requiresHumanReview=False
         )
 
+@app.post("/api/ai/boundary-conflict", response_model=StandardAiResponse)
+def evaluate_boundary_conflict(req: BoundaryConflictRequest):
+    overlap = req.overlap_area_sqm
+    score = min(100.0, 50.0 + overlap * 0.3)
+    level = "CRITICAL" if score >= 76 else ("HIGH" if score >= 51 else ("MEDIUM" if score >= 21 else "LOW"))
+    return StandardAiResponse(
+        ulpin=req.parcel_a_ulpin,
+        riskScore=round(score, 1),
+        riskLevel=level,
+        finding=f"Boundary Overlap Conflict Detected ({overlap} m²)",
+        confidence=0.91,
+        factors=[
+            RiskFactor(name="Cadastral Overlap Area", impact=round(overlap, 1))
+        ],
+        evidence=[
+            f"Spatial geometry overlap of {overlap} m² between {req.parcel_a_ulpin} and {req.parcel_b_ulpin}"
+        ],
+        recommendation="Order joint ground surveyor re-measurement.",
+        requiresHumanReview=True
+    )
+
 @app.post("/api/ai/change-detection")
 def detect_satellite_change(payload: Dict[str, Any]):
     ulpin = payload.get("ulpin", "MH-27-PUN-000004")
@@ -307,6 +328,7 @@ def detect_satellite_change(payload: Dict[str, Any]):
         "details": "0.14 Ha structural footprint anomaly detected compared to baseline satellite imagery."
     }
 
+@app.post("/api/ai/assistant", response_model=LandAssistantResponse)
 @app.post("/api/ai/assistant/query", response_model=LandAssistantResponse)
 def query_land_assistant(req: LandAssistantRequest):
     q = req.query.lower()
@@ -315,7 +337,7 @@ def query_land_assistant(req: LandAssistantRequest):
     if "dispute" in q or "litigation" in q or "risk" in q:
         return LandAssistantResponse(
             query=req.query,
-            answer=f"Parcel {ulpin} has active civil court dispute CS/2024/9912 regarding boundary overlap of 130 m².",
+            answer=f"Parcel {ulpin} is marked HIGH RISK due to active civil court dispute CS/2024/9912 regarding boundary overlap of 130 m².",
             fact=f"ULPIN {ulpin} is flagged under High Dispute Risk with CS/2024/9912.",
             inference="Active litigation indicates potential ownership/boundary contestation.",
             recommendation="Verify court stay orders before proceeding with mutation."
@@ -339,3 +361,4 @@ def query_land_assistant(req: LandAssistantRequest):
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+

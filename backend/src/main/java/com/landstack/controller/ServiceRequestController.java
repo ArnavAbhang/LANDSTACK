@@ -2,10 +2,14 @@ package com.landstack.controller;
 
 import com.landstack.entity.ServiceRequest;
 import com.landstack.entity.WorkflowCase;
+import com.landstack.security.AuthPrincipal;
+import com.landstack.security.SecurityContextResolver;
 import com.landstack.service.AuditService;
 import com.landstack.service.ServiceRequestService;
 import com.landstack.service.WorkflowCaseService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,28 +32,43 @@ public class ServiceRequestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ServiceRequest>> getServiceRequests(
+    public ResponseEntity<?> getServiceRequests(
             @RequestParam(required = false) String requesterId,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole) {
+            HttpServletRequest request) {
 
-        if ("LAND_OWNER".equalsIgnoreCase(userRole) && requesterId != null) {
-            return ResponseEntity.ok(requestService.getRequestsForUser(requesterId));
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
+        if (principal.isResident()) {
+            return ResponseEntity.ok(requestService.getRequestsForUser(principal.getPersonId()));
         }
-        return ResponseEntity.ok(requestService.getAllRequests());
+        if (principal.isGovernment() || principal.isAdmin()) {
+            return ResponseEntity.ok(requestService.getAllRequests());
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body(Map.of("error", "Access Denied: Unauthenticated access to service requests."));
     }
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<?> getServiceRequestById(@PathVariable String requestId) {
+    public ResponseEntity<?> getServiceRequestById(@PathVariable String requestId, HttpServletRequest request) {
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
         ServiceRequest req = requestService.getRequestById(requestId);
         if (req == null) return ResponseEntity.notFound().build();
+
+        if (principal.isResident() && !principal.getPersonId().equalsIgnoreCase(req.getRequesterId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", "Access Denied: Citizens can only access their own service requests."));
+        }
         return ResponseEntity.ok(req);
     }
 
     @PostMapping
     public ResponseEntity<?> createServiceRequest(
             @RequestBody Map<String, String> payload,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "LAND_OWNER") String userRole,
-            @RequestHeader(value = "X-User-Id", required = false, defaultValue = "CITIZEN-001") String userId) {
+            HttpServletRequest request) {
+
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
+        if (principal.isPublic()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Access Denied: Unauthenticated user cannot create service request."));
+        }
 
         String type = payload.getOrDefault("requestType", "MUTATION_REQUEST");
         String ulpin = payload.getOrDefault("ulpin", "MH-27-PUN-000001");
@@ -60,7 +79,7 @@ public class ServiceRequestController {
         String dept = payload.getOrDefault("department", "Revenue Dept");
         String desc = payload.getOrDefault("description", "Service request submitted by citizen.");
 
-        ServiceRequest req = requestService.createRequest(type, userId, ulpin, state, dist, taluka, village, dept, desc);
+        ServiceRequest req = requestService.createRequest(type, principal.getPersonId(), ulpin, state, dist, taluka, village, dept, desc);
         return ResponseEntity.ok(req);
     }
 
@@ -68,17 +87,18 @@ public class ServiceRequestController {
     public ResponseEntity<?> assignCase(
             @PathVariable String requestId,
             @RequestBody Map<String, String> payload,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole) {
+            HttpServletRequest request) {
 
-        if ("PUBLIC".equalsIgnoreCase(userRole) || "LAND_OWNER".equalsIgnoreCase(userRole)) {
-            return ResponseEntity.status(403).body(Map.of("error", "Access Restricted: Case assignment requires Government officer authorization."));
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
+        if (!principal.isGovernment() && !principal.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Access Restricted: Case assignment requires Government officer authorization."));
         }
 
         String officer = payload.getOrDefault("officerId", "OFFICER_REVENUE_PAUD");
         String dept = payload.getOrDefault("department", "Revenue Dept");
         String remarks = payload.getOrDefault("remarks", "Case assigned for jurisdiction officer review");
 
-        WorkflowCase c = caseService.assignOfficer("CASE-" + requestId, officer, dept, "GOV_OFFICER", userRole, remarks);
+        WorkflowCase c = caseService.assignOfficer("CASE-" + requestId, officer, dept, "GOV_OFFICER", principal.getRole(), remarks);
         return ResponseEntity.ok(Map.of("message", "Case assigned successfully", "case", c));
     }
 
@@ -86,47 +106,16 @@ public class ServiceRequestController {
     public ResponseEntity<?> approveCase(
             @PathVariable String requestId,
             @RequestBody(required = false) Map<String, String> payload,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole) {
+            HttpServletRequest request) {
 
-        if ("PUBLIC".equalsIgnoreCase(userRole) || "LAND_OWNER".equalsIgnoreCase(userRole)) {
-            return ResponseEntity.status(403).body(Map.of("error", "Access Restricted: Case approval requires Government authorization."));
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
+        if (!principal.isGovernment() && !principal.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Access Restricted: Case approval requires Government authorization."));
         }
 
         String reason = payload != null ? payload.getOrDefault("reason", "Approved after review") : "Approved after review";
-        WorkflowCase c = caseService.transitionStage("CASE-" + requestId, "APPROVED", "GOV_OFFICER", userRole, "Revenue Dept", reason);
+        WorkflowCase c = caseService.transitionStage("CASE-" + requestId, "APPROVED", "GOV_OFFICER", principal.getRole(), "Revenue Dept", reason);
 
         return ResponseEntity.ok(Map.of("message", "Service Request Approved", "case", c));
-    }
-
-    @PostMapping("/{requestId}/reject")
-    public ResponseEntity<?> rejectCase(
-            @PathVariable String requestId,
-            @RequestBody(required = false) Map<String, String> payload,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole) {
-
-        if ("PUBLIC".equalsIgnoreCase(userRole) || "LAND_OWNER".equalsIgnoreCase(userRole)) {
-            return ResponseEntity.status(403).body(Map.of("error", "Access Restricted: Case rejection requires Government authorization."));
-        }
-
-        String reason = payload != null ? payload.getOrDefault("reason", "Rejected due to invalid documents") : "Rejected due to invalid documents";
-        WorkflowCase c = caseService.transitionStage("CASE-" + requestId, "REJECTED", "GOV_OFFICER", userRole, "Revenue Dept", reason);
-
-        return ResponseEntity.ok(Map.of("message", "Service Request Rejected", "case", c));
-    }
-
-    @PostMapping("/{requestId}/escalate")
-    public ResponseEntity<?> escalateCase(
-            @PathVariable String requestId,
-            @RequestBody(required = false) Map<String, String> payload,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole) {
-
-        if ("PUBLIC".equalsIgnoreCase(userRole) || "LAND_OWNER".equalsIgnoreCase(userRole)) {
-            return ResponseEntity.status(403).body(Map.of("error", "Access Restricted: Case escalation requires Government authorization."));
-        }
-
-        String reason = payload != null ? payload.getOrDefault("reason", "Escalated due to SLA breach") : "Escalated due to SLA breach";
-        WorkflowCase c = caseService.escalateCase("CASE-" + requestId, "GOV_SUPERVISOR", userRole, "Revenue Dept", reason);
-
-        return ResponseEntity.ok(Map.of("message", "Case Escalated to Supervisor", "case", c));
     }
 }

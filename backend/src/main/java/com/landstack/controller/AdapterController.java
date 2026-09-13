@@ -2,7 +2,11 @@ package com.landstack.controller;
 
 import com.landstack.adapter.NormalizedLandRecord;
 import com.landstack.adapter.StateLandDataAdapter;
+import com.landstack.security.AuthPrincipal;
+import com.landstack.security.SecurityContextResolver;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,101 +89,16 @@ public class AdapterController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/adapters/{stateCode}")
-    public ResponseEntity<?> getAdapterByState(@PathVariable String stateCode) {
-        StateLandDataAdapter adapter = adapters.get(stateCode.toUpperCase());
-        if (adapter == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Adapter not found for state: " + stateCode));
-        }
-
-        return ResponseEntity.ok(Map.of(
-            "stateCode", adapter.getStateCode(),
-            "stateName", adapter.getStateName(),
-            "supportedDocumentTypes", adapter.getSupportedDocumentTypes(),
-            "fieldMappings", adapter.getFieldMappings(),
-            "status", "ONLINE"
-        ));
-    }
-
-    @PostMapping("/validate")
-    public ResponseEntity<?> validateStateRecord(@RequestBody Map<String, Object> payload) {
-        String stateCode = (String) payload.getOrDefault("stateCode", "MH");
-        StateLandDataAdapter adapter = adapters.get(stateCode.toUpperCase());
-
-        if (adapter == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Unsupported state code: " + stateCode));
-        }
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> sourceRecord = (Map<String, Object>) payload.getOrDefault("sourceRecord", payload);
-        NormalizedLandRecord normalized = adapter.normalizeRecord(sourceRecord);
-
-        return ResponseEntity.ok(Map.of(
-            "stateCode", stateCode,
-            "isValid", normalized.isValid(),
-            "validationErrors", normalized.getValidationErrors(),
-            "warnings", normalized.getWarnings(),
-            "infoMessages", normalized.getInfoMessages()
-        ));
-    }
-
-    @PostMapping("/normalize")
-    public ResponseEntity<?> normalizeStateRecord(@RequestBody Map<String, Object> payload) {
-        String stateCode = (String) payload.getOrDefault("stateCode", "MH");
-        StateLandDataAdapter adapter = adapters.get(stateCode.toUpperCase());
-
-        if (adapter == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Unsupported state code: " + stateCode));
-        }
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> sourceRecord = (Map<String, Object>) payload.getOrDefault("sourceRecord", payload);
-        NormalizedLandRecord normalized = adapter.normalizeRecord(sourceRecord);
-
-        return ResponseEntity.ok(normalized);
-    }
-
-    @PostMapping("/ingest")
-    public ResponseEntity<?> ingestStateRecord(@RequestBody Map<String, Object> payload) {
-        String stateCode = (String) payload.getOrDefault("stateCode", "MH");
-        StateLandDataAdapter adapter = adapters.get(stateCode.toUpperCase());
-
-        if (adapter == null) {
-            return ResponseEntity.badRequest().body(Map.of(
-                "error", "Unsupported state code: " + stateCode,
-                "supportedStates", adapters.keySet()
-            ));
-        }
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> sourceRecord = (Map<String, Object>) payload.getOrDefault("sourceRecord", payload);
-        NormalizedLandRecord normalized = adapter.normalizeRecord(sourceRecord);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Source record ingested & normalized successfully through " + adapter.getStateName() + " Adapter");
-        response.put("adapterUsed", adapter.getStateName() + " Adapter (" + adapter.getStateCode() + ")");
-        response.put("normalizedRecord", normalized);
-        response.put("status", normalized.isValid() ? "SUCCESS" : "VALIDATION_FAILED");
-        response.put("ulpin", normalized.getUlpin());
-        response.put("warningsCount", normalized.getWarnings().size());
-
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/records/{ulpin}/sources")
     public ResponseEntity<?> getParcelSourceRecords(
             @PathVariable String ulpin,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole,
-            @RequestHeader(value = "X-User-State", required = false, defaultValue = "MH") String userState) {
+            HttpServletRequest request) {
 
-        // Phase 7 Protection: Raw source JSON is restricted to authorized Government and Admin roles
-        boolean isGovOrAdmin = "GOV_ADMIN".equalsIgnoreCase(userRole) || "REVENUE_OFFICER".equalsIgnoreCase(userRole) || "ADMIN".equalsIgnoreCase(userRole);
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
         
-        if (!isGovOrAdmin) {
-            return ResponseEntity.status(403).body(Map.of(
-                "error", "Access Restricted: Raw state source payload is protected under Phase 7 security & privacy policy.",
-                "requiredRole", "GOVERNMENT / ADMIN",
-                "providedRole", userRole,
+        if (!principal.isGovernment() && !principal.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                "error", "Access Restricted: Raw state source payloads are restricted to authorized Government Officers.",
                 "status", "FORBIDDEN"
             ));
         }
@@ -199,58 +118,28 @@ public class AdapterController {
             rawSource.put("pattaNo", "1082");
         } else if (isPb) {
             rawSource.put("stateCode", "PB");
-            rawSource.put("sourceSystem", "PLRS Fard Engine");
+            rawSource.put("sourceSystem", "PLRS Jamabandi System");
             rawSource.put("documentType", "Jamabandi Fard");
-            rawSource.put("ownerName", "Gurpreet Singh");
-            rawSource.put("khasraNumber", "88/1");
-            rawSource.put("areaKanalMarla", "16-0");
-            rawSource.put("landCategory", "Chahi (Irrigated)");
             rawSource.put("khewatNo", "402");
+            rawSource.put("ownerName", "Gurpreet Singh");
+            rawSource.put("surveyNumber", "88/1");
+            rawSource.put("extentKanal", 16.0);
+            rawSource.put("classification", "Chahi (Irrigated)");
         } else {
             rawSource.put("stateCode", "MH");
-            rawSource.put("sourceSystem", "MahaBhulekh 7/12");
+            rawSource.put("sourceSystem", "MahaBhulekh Portal");
             rawSource.put("documentType", "7/12 Extract");
-            rawSource.put("khatedarName", "Vijay Jadhav");
-            rawSource.put("surveyNo", "125/1");
-            rawSource.put("areaHectare", 3.10);
-            rawSource.put("jameenPrakar", "Agricultural");
+            rawSource.put("khatedarName", "Rajendra Patil");
+            rawSource.put("surveyNumber", "123/4");
+            rawSource.put("extentHectare", 2.45);
+            rawSource.put("classification", "Jirayat Agricultural");
             rawSource.put("khataNo", "482");
         }
 
         return ResponseEntity.ok(Map.of(
             "ulpin", ulpin,
             "rawSourcePayload", rawSource,
-            "preservationStatus", "UNTOUCHED_ORIGINAL_SOURCE_TRUTH",
-            "securityLevel", "RESTRICTED_GOVERNMENT_VIEW"
+            "accessTier", "GOVERNMENT_RESTRICTED"
         ));
-    }
-
-    @GetMapping("/records/{ulpin}/canonical")
-    public ResponseEntity<?> getParcelCanonicalRecord(@PathVariable String ulpin) {
-        boolean isTn = ulpin.toUpperCase().contains("TN");
-        boolean isPb = ulpin.toUpperCase().contains("PB");
-        String stCode = isTn ? "TN" : (isPb ? "PB" : "MH");
-        StateLandDataAdapter adapter = adapters.get(stCode);
-
-        Map<String, Object> mockRaw = new HashMap<>();
-        if (isTn) {
-            mockRaw.put("pattaHolder", "M. Shanmugam");
-            mockRaw.put("surveyNumber", "201/1A");
-            mockRaw.put("extentAcres", 4.0);
-            mockRaw.put("ulpin", ulpin);
-        } else if (isPb) {
-            mockRaw.put("ownerName", "Gurpreet Singh");
-            mockRaw.put("khasraNumber", "88/1");
-            mockRaw.put("areaKanalMarla", "16-0");
-            mockRaw.put("ulpin", ulpin);
-        } else {
-            mockRaw.put("khatedarName", "Vijay Jadhav");
-            mockRaw.put("surveyNo", "125/1");
-            mockRaw.put("areaHectare", 3.10);
-            mockRaw.put("ulpin", ulpin);
-        }
-
-        NormalizedLandRecord canonical = adapter.normalizeRecord(mockRaw);
-        return ResponseEntity.ok(canonical);
     }
 }

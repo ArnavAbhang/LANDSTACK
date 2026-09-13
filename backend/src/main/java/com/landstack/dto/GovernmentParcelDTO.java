@@ -3,94 +3,65 @@ package com.landstack.dto;
 import java.util.Map;
 
 public class GovernmentParcelDTO {
+
     private String ulpin;
     private String stateParcelId;
-    private String stateCode;
+    private String state;
     private String district;
     private String taluka;
     private String village;
     private String surveyNumber;
-    private Double areaSqMeters;
-    private Double areaHectare;
-    private String ownerName;
+    private String areaDisplay;
     private String landType;
-    private String landUse;
-    private String rorExtractType;
-    private Double propertyTaxDues;
+    private String ownerName;
+    private String rorType;
     private String taxStatus;
-    private String disputeStatus;
-    private Integer aiRiskScore;
-    private String aiRiskLevel;
-    private String userRole;
-    private String departmentCode;
-    private String jurisdictionScope;
-    private Map<String, Object> rawSourcePayload; // Null if officer not authorized
+    private Double taxDues;
+    private String disputeRisk;
+    private String disputeSummary;
+    private String systemClearance;
+    private Map<String, Object> aiRiskGovernanceEvaluation;
+    private Map<String, Object> rawSourcePayload;
+    private String accessTier = "GOVERNMENT_FULL_DOSSIER";
 
-    public GovernmentParcelDTO() {}
+    public GovernmentParcelDTO(String ulpin, String stateParcelId, String state, String district, String taluka, String village, String surveyNumber, String areaDisplay, String landType, String ownerName, String rorType, String taxStatus, Double taxDues, String disputeRisk, String disputeSummary, String systemClearance, Map<String, Object> aiRiskGovernanceEvaluation, Map<String, Object> rawSourcePayload) {
+        this.ulpin = ulpin;
+        this.stateParcelId = stateParcelId;
+        this.state = state;
+        this.district = district;
+        this.taluka = taluka;
+        this.village = village;
+        this.surveyNumber = surveyNumber;
+        this.areaDisplay = areaDisplay;
+        this.landType = landType;
+        this.ownerName = ownerName;
+        this.rorType = rorType;
+        this.taxStatus = taxStatus;
+        this.taxDues = taxDues;
+        this.disputeRisk = disputeRisk;
+        this.disputeSummary = disputeSummary;
+        this.systemClearance = systemClearance;
+        this.aiRiskGovernanceEvaluation = aiRiskGovernanceEvaluation;
+        this.rawSourcePayload = rawSourcePayload;
+    }
 
     public String getUlpin() { return ulpin; }
-    public void setUlpin(String ulpin) { this.ulpin = ulpin; }
-
     public String getStateParcelId() { return stateParcelId; }
-    public void setStateParcelId(String stateParcelId) { this.stateParcelId = stateParcelId; }
-
-    public String getStateCode() { return stateCode; }
-    public void setStateCode(String stateCode) { this.stateCode = stateCode; }
-
+    public String getState() { return state; }
     public String getDistrict() { return district; }
-    public void setDistrict(String district) { this.district = district; }
-
     public String getTaluka() { return taluka; }
-    public void setTaluka(String taluka) { this.taluka = taluka; }
-
     public String getVillage() { return village; }
-    public void setVillage(String village) { this.village = village; }
-
     public String getSurveyNumber() { return surveyNumber; }
-    public void setSurveyNumber(String surveyNumber) { this.surveyNumber = surveyNumber; }
-
-    public Double getAreaSqMeters() { return areaSqMeters; }
-    public void setAreaSqMeters(Double areaSqMeters) { this.areaSqMeters = areaSqMeters; }
-
-    public Double getAreaHectare() { return areaHectare; }
-    public void setAreaHectare(Double areaHectare) { this.areaHectare = areaHectare; }
-
-    public String getOwnerName() { return ownerName; }
-    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
-
+    public String getAreaDisplay() { return areaDisplay; }
     public String getLandType() { return landType; }
-    public void setLandType(String landType) { this.landType = landType; }
-
-    public String getLandUse() { return landUse; }
-    public void setLandUse(String landUse) { this.landUse = landUse; }
-
-    public String getRorExtractType() { return rorExtractType; }
-    public void setRorExtractType(String rorExtractType) { this.rorExtractType = rorExtractType; }
-
-    public Double getPropertyTaxDues() { return propertyTaxDues; }
-    public void setPropertyTaxDues(Double propertyTaxDues) { this.propertyTaxDues = propertyTaxDues; }
-
+    public String getOwnerName() { return ownerName; }
+    public String getRorType() { return rorType; }
     public String getTaxStatus() { return taxStatus; }
-    public void setTaxStatus(String taxStatus) { this.taxStatus = taxStatus; }
-
-    public String getDisputeStatus() { return disputeStatus; }
-    public void setDisputeStatus(String disputeStatus) { this.disputeStatus = disputeStatus; }
-
-    public Integer getAiRiskScore() { return aiRiskScore; }
-    public void setAiRiskScore(Integer aiRiskScore) { this.aiRiskScore = aiRiskScore; }
-
-    public String getAiRiskLevel() { return aiRiskLevel; }
-    public void setAiRiskLevel(String aiRiskLevel) { this.aiRiskLevel = aiRiskLevel; }
-
-    public String getUserRole() { return userRole; }
-    public void setUserRole(String userRole) { this.userRole = userRole; }
-
-    public String getDepartmentCode() { return departmentCode; }
-    public void setDepartmentCode(String departmentCode) { this.departmentCode = departmentCode; }
-
-    public String getJurisdictionScope() { return jurisdictionScope; }
-    public void setJurisdictionScope(String jurisdictionScope) { this.jurisdictionScope = jurisdictionScope; }
-
+    public Double getTaxDues() { return taxDues; }
+    public String getDisputeRisk() { return disputeRisk; }
+    public String getDisputeSummary() { return disputeSummary; }
+    public String getSystemClearance() { return systemClearance; }
+    public Map<String, Object> getAiRiskGovernanceEvaluation() { return aiRiskGovernanceEvaluation; }
     public Map<String, Object> getRawSourcePayload() { return rawSourcePayload; }
-    public void setRawSourcePayload(Map<String, Object> rawSourcePayload) { this.rawSourcePayload = rawSourcePayload; }
+    public String getAccessTier() { return accessTier; }
 }

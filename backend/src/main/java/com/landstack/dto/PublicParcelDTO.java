@@ -1,58 +1,60 @@
 package com.landstack.dto;
 
 public class PublicParcelDTO {
+
     private String ulpin;
     private String stateParcelId;
-    private String stateCode;
+    private String state;
     private String district;
     private String taluka;
     private String village;
     private String surveyNumber;
-    private Double areaSqMeters;
-    private Double areaHectare;
-    private String maskedOwnerName; // e.g. "R. A. D******"
+    private String areaDisplay;
     private String landType;
-    private String landUse;
-    private String privacyClassification = "PUBLIC";
+    private String ownerNameMasked;
+    private String ownerName;
+    private String disputeRisk = "LOW";
+    private String publicAccessTier = "PUBLIC_METADATA_ONLY";
 
-    public PublicParcelDTO() {}
+    public PublicParcelDTO(String ulpin, String stateParcelId, String state, String district, String taluka, String village, String surveyNumber, String areaDisplay, String landType, String ownerName) {
+        this.ulpin = ulpin;
+        this.stateParcelId = stateParcelId;
+        this.state = state;
+        this.district = district;
+        this.taluka = taluka;
+        this.village = village;
+        this.surveyNumber = surveyNumber;
+        this.areaDisplay = areaDisplay;
+        this.landType = landType;
+        this.ownerName = ownerName;
+        this.ownerNameMasked = maskName(ownerName);
+        if (ulpin != null && (ulpin.contains("000003") || ulpin.contains("000004"))) {
+            this.disputeRisk = ulpin.contains("000003") ? "HIGH" : "MEDIUM";
+        }
+    }
+
+    private String maskName(String name) {
+        if (name == null) return "Unknown";
+        String[] parts = name.split(" ");
+        if (parts.length > 1) {
+            return parts[0] + " " + parts[1].substring(0, 1) + "***";
+        }
+        return name.substring(0, Math.min(2, name.length())) + "***";
+    }
+
+    public String getDisputeRisk() { return disputeRisk; }
+    public String getRiskLevel() { return disputeRisk; }
+    public String getOwnerName() { return ownerName; }
 
     public String getUlpin() { return ulpin; }
-    public void setUlpin(String ulpin) { this.ulpin = ulpin; }
-
     public String getStateParcelId() { return stateParcelId; }
-    public void setStateParcelId(String stateParcelId) { this.stateParcelId = stateParcelId; }
-
-    public String getStateCode() { return stateCode; }
-    public void setStateCode(String stateCode) { this.stateCode = stateCode; }
-
+    public String getState() { return state; }
     public String getDistrict() { return district; }
-    public void setDistrict(String district) { this.district = district; }
-
     public String getTaluka() { return taluka; }
-    public void setTaluka(String taluka) { this.taluka = taluka; }
-
     public String getVillage() { return village; }
-    public void setVillage(String village) { this.village = village; }
-
     public String getSurveyNumber() { return surveyNumber; }
-    public void setSurveyNumber(String surveyNumber) { this.surveyNumber = surveyNumber; }
-
-    public Double getAreaSqMeters() { return areaSqMeters; }
-    public void setAreaSqMeters(Double areaSqMeters) { this.areaSqMeters = areaSqMeters; }
-
-    public Double getAreaHectare() { return areaHectare; }
-    public void setAreaHectare(Double areaHectare) { this.areaHectare = areaHectare; }
-
-    public String getMaskedOwnerName() { return maskedOwnerName; }
-    public void setMaskedOwnerName(String maskedOwnerName) { this.maskedOwnerName = maskedOwnerName; }
-
+    public String getAreaDisplay() { return areaDisplay; }
     public String getLandType() { return landType; }
-    public void setLandType(String landType) { this.landType = landType; }
-
-    public String getLandUse() { return landUse; }
-    public void setLandUse(String landUse) { this.landUse = landUse; }
-
-    public String getPrivacyClassification() { return privacyClassification; }
-    public void setPrivacyClassification(String privacyClassification) { this.privacyClassification = privacyClassification; }
+    public String getOwnerNameMasked() { return ownerNameMasked; }
+    public String getPublicAccessTier() { return publicAccessTier; }
 }

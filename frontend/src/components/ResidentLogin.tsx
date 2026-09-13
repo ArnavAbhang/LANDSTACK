@@ -167,7 +167,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
       .then((data) => {
         setLoading(false);
         if (data.token) {
-          onLoginSuccess(data.token, data.user);
+          onLoginSuccess(data.token, { ...data.user, isNewUser: true });
         } else {
           setError(data.error || 'Account creation failed');
         }
@@ -181,6 +181,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
           name: regName || 'Resident Citizen',
           role: 'RESIDENT',
           portal: 'RESIDENT',
+          isNewUser: true,
           state: stateObj?.name || 'Maharashtra',
           stateId: regState,
           district: distObj?.name || 'Pune',

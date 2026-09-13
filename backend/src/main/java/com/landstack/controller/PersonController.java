@@ -2,9 +2,13 @@ package com.landstack.controller;
 
 import com.landstack.entity.Ownership;
 import com.landstack.entity.Person;
+import com.landstack.security.AuthPrincipal;
+import com.landstack.security.SecurityContextResolver;
 import com.landstack.service.PersonMatchingService;
 import com.landstack.service.PersonService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,22 +37,24 @@ public class PersonController {
             @RequestParam(required = false) String talukaId,
             @RequestParam(required = false) String villageId,
             @RequestParam(required = false) String ulpin,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole,
-            @RequestHeader(value = "X-User-Taluka", required = false, defaultValue = "Haveli") String userTaluka) {
+            HttpServletRequest request) {
 
-        List<Person> results = personService.searchPersons(name, personId, stateCode, districtId, talukaId, villageId, ulpin, userRole, userTaluka);
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
+        if (!principal.isGovernment() && !principal.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", "Access Denied: Land Owner Search is restricted to authorized Government Officials."));
+        }
 
-        // Apply Privacy Masking for Public Users
+        List<Person> results = personService.searchPersons(name, personId, stateCode, districtId, talukaId, villageId, ulpin, principal.getRole(), principal.getTalukaId());
+
         List<Map<String, Object>> responseList = new ArrayList<>();
-        boolean isPublic = "PUBLIC".equalsIgnoreCase(userRole);
-
         for (Person p : results) {
             Map<String, Object> map = new LinkedHashMap<>();
-            map.put("personId", isPublic ? "MASKED-PER-ID" : p.getPersonId());
+            map.put("personId", p.getPersonId());
             map.put("name", p.getName());
-            map.put("email", isPublic ? "m***@example.com" : p.getEmail());
-            map.put("phone", isPublic ? "+91 98*** ****" : p.getPhone());
-            map.put("address", isPublic ? "Masked Address" : p.getAddress());
+            map.put("email", p.getEmail());
+            map.put("phone", p.getPhone());
+            map.put("address", p.getAddress());
             map.put("stateCode", p.getStateCode());
             map.put("districtId", p.getDistrictId());
             map.put("talukaId", p.getTalukaId());
@@ -68,12 +74,23 @@ public class PersonController {
     @GetMapping("/persons/{personId}")
     public ResponseEntity<?> getPersonById(
             @PathVariable String personId,
-            @RequestHeader(value = "X-User-Role", required = false, defaultValue = "PUBLIC") String userRole,
-            @RequestHeader(value = "X-User-Taluka", required = false, defaultValue = "Haveli") String userTaluka) {
+            HttpServletRequest request) {
 
-        Person p = personService.getPersonById(personId, userRole, userTaluka);
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
+
+        if (principal.isResident()) {
+            if (!personId.equalsIgnoreCase(principal.getPersonId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Access Denied: Citizens can only access their own authenticated profile."));
+            }
+        } else if (!principal.isGovernment() && !principal.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", "Access Denied: Unauthenticated or unauthorized access."));
+        }
+
+        Person p = personService.getPersonById(personId, principal.getRole(), principal.getTalukaId());
         if (p == null) {
-            return ResponseEntity.status(403).body(Map.of("error", "Access Denied: Person record not found or outside authorized officer jurisdiction."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Access Denied: Person record not found or outside authorized officer jurisdiction."));
         }
 
         Map<String, Object> map = new LinkedHashMap<>();
@@ -96,23 +113,12 @@ public class PersonController {
     }
 
     @GetMapping("/persons/{personId}/ownerships")
-    public ResponseEntity<List<Ownership>> getPersonOwnerships(@PathVariable String personId) {
+    public ResponseEntity<?> getPersonOwnerships(@PathVariable String personId, HttpServletRequest request) {
+        AuthPrincipal principal = SecurityContextResolver.resolvePrincipal(request);
+        if (principal.isResident() && !personId.equalsIgnoreCase(principal.getPersonId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", "Access Denied: Citizens can only access their own ownership holdings."));
+        }
         return ResponseEntity.ok(personService.getOwnershipsForPerson(personId));
-    }
-
-    @GetMapping("/parcels/{ulpin}/owners")
-    public ResponseEntity<List<Ownership>> getParcelOwners(@PathVariable String ulpin) {
-        return ResponseEntity.ok(personService.getOwnersForUlpin(ulpin));
-    }
-
-    @PostMapping("/persons/match")
-    public ResponseEntity<?> matchPerson(@RequestBody Map<String, String> payload) {
-        String incomingName = payload.getOrDefault("name", "");
-        String incomingJurisdiction = payload.getOrDefault("jurisdiction", "");
-
-        List<Person> allPersons = personService.searchPersons(null, null, null, null, null, null, null, "GOV_ADMIN", "ALL");
-        Map<String, Object> matchResult = matchingService.evaluateMatch(incomingName, incomingJurisdiction, allPersons);
-
-        return ResponseEntity.ok(matchResult);
     }
 }
