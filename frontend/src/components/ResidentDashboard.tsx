@@ -36,6 +36,8 @@ import { IdentityVerificationComponent } from './IdentityVerificationComponent';
 import { MyAccountModal } from './MyAccountModal';
 import { ParcelDetailModal } from './ParcelDetailModal';
 import { LandAssistant } from './LandAssistant';
+import { LanguageSelector } from './LanguageSelector';
+import { useLanguage } from '../context/LanguageContext';
 import { Sparkles, MessageSquare } from 'lucide-react';
 
 interface ResidentDashboardProps {
@@ -53,6 +55,7 @@ export const ResidentDashboard: React.FC<ResidentDashboardProps> = ({
   onOpenGisMap,
   onSelectParcel,
 }) => {
+  const { t } = useLanguage();
   const [currentUser, setCurrentUser] = useState<any>(initialUser);
   const [currentLocation, setCurrentLocation] = useState<any>(initialLocation);
 
@@ -269,12 +272,14 @@ export const ResidentDashboard: React.FC<ResidentDashboardProps> = ({
       <div className="bg-blue-950 text-white text-[11px] px-6 py-1 flex items-center justify-between font-semibold border-b border-blue-900">
         <div className="flex items-center gap-2">
           <Globe className="w-3.5 h-3.5 text-blue-300" />
-          <span>Government of India Digital Public Infrastructure | Integrated Land Governance</span>
+          <span>{t('gov_banner_title', 'Government of India Digital Public Infrastructure | Integrated Land Governance')}</span>
         </div>
         <div className="flex items-center gap-3 text-blue-200">
           <span>Role: <strong>Resident Account Holder</strong></span>
           <span>•</span>
           <span>Privacy: <strong>Owner-Only Enforced</strong></span>
+          <span>•</span>
+          <LanguageSelector variant="dark" compact={false} />
         </div>
       </div>
 
@@ -286,7 +291,7 @@ export const ResidentDashboard: React.FC<ResidentDashboardProps> = ({
           </div>
           <div>
             <h1 className="font-black text-slate-900 text-base tracking-tight flex items-center gap-2">
-              <span>RESIDENT PORTAL</span>
+              <span>{t('resident_portal', 'RESIDENT PORTAL')}</span>
               <span className="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full font-extrabold">
                 {currentLocation?.stateName || 'Maharashtra'}
               </span>
@@ -303,7 +308,7 @@ export const ResidentDashboard: React.FC<ResidentDashboardProps> = ({
             className="flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-900 px-3.5 py-1.5 rounded-xl transition-all shadow-sm"
           >
             <Sparkles className="w-4 h-4 text-indigo-600 animate-pulse" />
-            <span>Bhu-Mitra AI Assistant</span>
+            <span>{t('bhu_mitra_ai', 'Bhu-Mitra AI Assistant')}</span>
           </button>
 
           <button
@@ -311,7 +316,7 @@ export const ResidentDashboard: React.FC<ResidentDashboardProps> = ({
             className="flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-1.5 rounded-xl transition-all shadow-md"
           >
             <Plus className="w-4 h-4" />
-            <span>Link Land Record</span>
+            <span>{t('link_land_record', 'Link Land Record')}</span>
           </button>
 
           <button
@@ -319,15 +324,18 @@ export const ResidentDashboard: React.FC<ResidentDashboardProps> = ({
             className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 transition-colors shadow-sm"
           >
             <User className="w-4 h-4 text-emerald-700" />
-            <span>My Account & Settings</span>
+            <span>{t('my_account', 'My Account & Settings')}</span>
           </button>
+
+          <LanguageSelector variant="light" compact={false} />
 
           <button
             onClick={onLogout}
             className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-700 transition-colors"
+            title={t('sign_out', 'Sign Out')}
           >
             <LogOut className="w-3.5 h-3.5 text-slate-500" />
-            <span>Logout</span>
+            <span>{t('sign_out', 'Logout')}</span>
           </button>
         </div>
       </header>

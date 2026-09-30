@@ -10,10 +10,14 @@ import { ParcelDetailModal } from './components/ParcelDetailModal';
 import { GovernmentDashboard } from './components/GovernmentDashboard';
 import { AiGovernanceDashboard } from './components/AiGovernanceDashboard';
 import { LandAssistant } from './components/LandAssistant';
+import { LanguageSelector } from './components/LanguageSelector';
+import { useLanguage } from './context/LanguageContext';
 import { MapPin, Layers, User, ShieldCheck, Search, Building2, Cpu, Sparkles, Bot, LogOut, ArrowLeft, Globe } from 'lucide-react';
 import { saveSession, getSavedSession, clearSession, updateSessionRoute, updateSessionJurisdiction } from './utils/session';
 
 export default function App() {
+  const { t } = useLanguage();
+
   // Synchronous session restoration on initial load
   const restoredSession = getSavedSession();
 
@@ -157,22 +161,26 @@ export default function App() {
               className="text-xs font-extrabold text-blue-200 hover:text-white flex items-center gap-1.5 bg-blue-900 border border-blue-800 px-3 py-1.5 rounded-xl shadow-sm"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back to Resident Dashboard</span>
+              <span>{t('back_to_dashboard', 'Back to Resident Dashboard')}</span>
             </button>
             <span className="text-xs font-black text-white">
-              Resident Cadastral GIS Map ({jurisdiction.villageName}, {jurisdiction.talukaName})
+              {t('cadastral_gis_map', 'Resident Cadastral GIS Map')} ({jurisdiction.villageName}, {jurisdiction.talukaName})
             </span>
           </div>
 
-          <button
-            onClick={handleLogout}
-            className="p-2 rounded-xl bg-blue-900 border border-blue-800 text-blue-200 hover:text-white"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-3">
+            <LanguageSelector variant="dark" compact={false} />
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-xl bg-blue-900 border border-blue-800 text-blue-200 hover:text-white"
+              title={t('sign_out', 'Sign Out')}
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
         </header>
 
-        <div className="flex-1 relative">
+        <div className="flex-1 relative" style={{ minHeight: 0 }}>
           <GisMapViewer
             selectedState={jurisdiction.stateId}
             selectedVillage={jurisdiction.villageId}
@@ -244,12 +252,14 @@ export default function App() {
       <div className="bg-blue-950 text-white text-[11px] px-6 py-1 flex items-center justify-between font-semibold border-b border-blue-900">
         <div className="flex items-center gap-2">
           <Globe className="w-3.5 h-3.5 text-blue-300" />
-          <span>Government of India Digital Public Infrastructure | Integrated Land Governance</span>
+          <span>{t('gov_banner_title', 'Government of India Digital Public Infrastructure | Integrated Land Governance')}</span>
         </div>
         <div className="flex items-center gap-3 text-blue-200">
           <span>Role: <strong>{userRole}</strong></span>
           <span>•</span>
           <span>Department: <strong>{jurisdiction.departmentCode || 'REVENUE'}</strong></span>
+          <span>•</span>
+          <LanguageSelector variant="dark" compact={false} />
         </div>
       </div>
 
@@ -264,7 +274,7 @@ export default function App() {
             <h1 className="font-black text-slate-900 text-lg tracking-tight flex items-center gap-2">
               <span>LAND STACK</span>
               <span className="text-[10px] bg-blue-50 text-blue-900 px-2 py-0.5 rounded-full font-extrabold border border-blue-200">
-                OFFICIAL GOVT PORTAL
+                {t('official_portal_badge', 'OFFICIAL GOVT PORTAL')}
               </span>
             </h1>
             <p className="text-[11px] text-slate-600 font-semibold hidden sm:block">
@@ -282,7 +292,7 @@ export default function App() {
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
-            <span>Department Portal</span>
+            <span>{t('department_portal', 'Department Portal')}</span>
           </button>
 
           <button
@@ -292,7 +302,7 @@ export default function App() {
             }`}
           >
             <MapPin className="w-3.5 h-3.5" />
-            <span>Cadastral GIS Map</span>
+            <span>{t('cadastral_gis_map', 'Cadastral GIS Map')}</span>
           </button>
 
           <button
@@ -302,20 +312,20 @@ export default function App() {
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Decision Support AI</span>
+            <span>{t('decision_support_ai', 'Decision Support AI')}</span>
           </button>
         </div>
 
-        {/* Right Search, Assistant & Logout Toolbar */}
-        <div className="flex items-center gap-4">
+        {/* Right Search, Assistant, Language & Logout Toolbar */}
+        <div className="flex items-center gap-3">
           
           <form onSubmit={handleSearch} className="relative hidden md:block">
             <input
               type="text"
-              placeholder="Search ULPIN (e.g. MH-27-PUN-000003)..."
+              placeholder={t('search_ulpin_placeholder', 'Search ULPIN (e.g. MH-27-PUN-000003)...')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-slate-50 border border-slate-300 text-slate-900 text-xs font-semibold pl-8 pr-4 py-1.5 rounded-xl focus:border-blue-700 focus:outline-none w-64"
+              className="bg-slate-50 border border-slate-300 text-slate-900 text-xs font-semibold pl-8 pr-4 py-1.5 rounded-xl focus:border-blue-700 focus:outline-none w-60"
             />
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
           </form>
@@ -329,13 +339,15 @@ export default function App() {
             }`}
           >
             <Bot className="w-4 h-4 text-blue-700" />
-            <span className="hidden lg:inline">Land Assistant</span>
+            <span className="hidden lg:inline">{t('land_assistant', 'Land Assistant')}</span>
           </button>
+
+          <LanguageSelector variant="light" compact={false} />
 
           <button
             onClick={handleLogout}
             className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition-colors shadow-sm"
-            title="Sign Out"
+            title={t('sign_out', 'Sign Out')}
           >
             <LogOut className="w-4 h-4" />
           </button>
@@ -345,20 +357,24 @@ export default function App() {
       </header>
 
       {/* Main App Body View */}
-      <main className="flex-1 flex flex-col relative overflow-hidden">
+      <main className="flex-1 flex flex-col relative overflow-hidden" style={{ minHeight: 0 }}>
         {activeTab === 'map' && (
-          <div className="flex-1 flex flex-col">
-            <LocalitySelector
-              selectedState={jurisdiction.stateId}
-              selectedDistrict={jurisdiction.districtId}
-              selectedTaluka={jurisdiction.talukaId}
-              selectedVillage={jurisdiction.villageId}
-              onStateChange={(st) => updateJurisdictionState({ ...jurisdiction, stateId: st })}
-              onDistrictChange={(dt) => updateJurisdictionState({ ...jurisdiction, districtId: dt })}
-              onTalukaChange={(tk) => updateJurisdictionState({ ...jurisdiction, talukaId: tk })}
-              onVillageChange={(vg) => updateJurisdictionState({ ...jurisdiction, villageId: vg })}
-            />
-            <div className="flex-1 relative">
+          <div className="flex-1 flex flex-col" style={{ minHeight: 0 }}>
+            {/* Locality Filter Bar — sticky just below the main app header */}
+            <div className="flex-shrink-0">
+              <LocalitySelector
+                selectedState={jurisdiction.stateId}
+                selectedDistrict={jurisdiction.districtId}
+                selectedTaluka={jurisdiction.talukaId}
+                selectedVillage={jurisdiction.villageId}
+                onStateChange={(st) => updateJurisdictionState({ ...jurisdiction, stateId: st })}
+                onDistrictChange={(dt) => updateJurisdictionState({ ...jurisdiction, districtId: dt })}
+                onTalukaChange={(tk) => updateJurisdictionState({ ...jurisdiction, talukaId: tk })}
+                onVillageChange={(vg) => updateJurisdictionState({ ...jurisdiction, villageId: vg })}
+              />
+            </div>
+            {/* GIS Map — fills ALL remaining space below the locality bar */}
+            <div className="flex-1 relative" style={{ minHeight: 0 }}>
               <GisMapViewer
                 selectedState={jurisdiction.stateId}
                 selectedVillage={jurisdiction.villageId}

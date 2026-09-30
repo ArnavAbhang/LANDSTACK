@@ -190,12 +190,13 @@ Clicking any parcel or entering an ULPIN opens an 800px drawer with 9 comprehens
 
 ## 🗄 Database Schema Reference
 
-The platform uses Flyway SQL migrations (`database/migrations/`):
+The platform uses versioned SQL migrations (`database/migrations/`) following Flyway naming conventions (`V##__description.sql`). **Migrations are executed manually via `psql`** — Flyway is not a runtime dependency. See the Installation Guide below for exact commands.
 - `V1__init_landstack_schema.sql`: Core tables (`states`, `districts`, `talukas`, `villages`, `parcels`, `ror_records`, `mutations`, `registrations`, `tax_records`, `utility_records`, `disputes`, `documents`).
 - `V4__init_spatial_layers_schema.sql`: PostGIS spatial tables (`land_use_zones`, `zoning_zones`, `master_plan_zones`, `utility_networks`, `road_networks`, `restriction_zones`, `spatial_alerts`).
 - `V6__update_irregular_parcels.sql`: Seeds irregular contiguous cadastral polygon geometries for Maharashtra (Paud, Haveli) and Tamil Nadu (Kanchipuram).
 - `V7__init_workflows_and_audit_schema.sql`: Workflow tables (`departments`, `service_requests`, `workflow_instances`, `audit_logs`, `notifications`).
 - `V9__init_ai_governance_schema.sql`: `ai_alerts` table storing risk scores, evidence, recommendations, and officer decision statuses.
+- `V31__postgis_cadastral_geometry_foundation.sql`: PostGIS `geometry` column, GiST spatial indexes, and synthetic cadastral demonstration dataset (36 parcels for Paud village).
 
 ---
 

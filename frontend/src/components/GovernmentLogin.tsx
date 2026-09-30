@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Building2, ArrowLeft, Lock, Mail, ShieldAlert, UserPlus, MapPin, ShieldCheck } from 'lucide-react';
+import { LanguageSelector } from './LanguageSelector';
+import { useLanguage } from '../context/LanguageContext';
 import {
   STATES_DATA,
   getCitiesForState,
@@ -18,7 +20,7 @@ export const GovernmentLogin: React.FC<GovernmentLoginProps> = ({ onLoginSuccess
 
   // Login state
   const [email, setEmail] = useState('revenue.officer@example.gov');
-  const [password, setPassword] = useState('admin123');
+  const [password, setPassword] = useState('Officer@LandGov#2026');
 
   // Registration state
   const [regName, setRegName] = useState('');
@@ -205,6 +207,10 @@ export const GovernmentLogin: React.FC<GovernmentLoginProps> = ({ onLoginSuccess
         <span>Back to Public Gateway</span>
       </button>
 
+      <div className="absolute top-6 right-6">
+        <LanguageSelector variant="light" compact={false} />
+      </div>
+
       <div className="w-full max-w-lg bg-white border border-slate-200 p-8 rounded-3xl shadow-xl space-y-6">
         
         {/* Header */}
@@ -278,6 +284,7 @@ export const GovernmentLogin: React.FC<GovernmentLoginProps> = ({ onLoginSuccess
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
                   className="w-full bg-slate-50 border border-slate-300 text-slate-900 pl-9 pr-4 py-2.5 rounded-xl focus:border-blue-700 focus:outline-none font-semibold"
                   required
                 />
@@ -302,6 +309,7 @@ export const GovernmentLogin: React.FC<GovernmentLoginProps> = ({ onLoginSuccess
                 placeholder="e.g. Tahashildar S. K. Deshmukh"
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
+                autoComplete="name"
                 className="w-full bg-slate-50 border border-slate-300 text-slate-900 px-4 py-2.5 rounded-xl focus:border-blue-700 focus:outline-none font-semibold"
                 required
               />
@@ -315,6 +323,7 @@ export const GovernmentLogin: React.FC<GovernmentLoginProps> = ({ onLoginSuccess
                   placeholder="officer@example.gov"
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
+                  autoComplete="email"
                   className="w-full bg-slate-50 border border-slate-300 text-slate-900 px-3 py-2.5 rounded-xl focus:border-blue-700 focus:outline-none font-semibold"
                   required
                 />
@@ -324,9 +333,11 @@ export const GovernmentLogin: React.FC<GovernmentLoginProps> = ({ onLoginSuccess
                 <label className="block text-slate-700 font-bold mb-1">Password</label>
                 <input
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="Min 8 chars (e.g. Gov#2026!)"
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
+                  autoComplete="new-password"
+                  minLength={6}
                   className="w-full bg-slate-50 border border-slate-300 text-slate-900 px-3 py-2.5 rounded-xl focus:border-blue-700 focus:outline-none font-semibold"
                   required
                 />

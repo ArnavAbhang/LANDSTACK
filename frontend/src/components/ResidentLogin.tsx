@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Lock, Mail, UserCheck, ShieldCheck, UserPlus, MapPin } from 'lucide-react';
+import { LanguageSelector } from './LanguageSelector';
+import { useLanguage } from '../context/LanguageContext';
 import {
   STATES_DATA,
   getCitiesForState,
@@ -22,7 +24,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
 
   // Login form state
   const [email, setEmail] = useState('resident@example.com');
-  const [password, setPassword] = useState('password123');
+  const [password, setPassword] = useState('Patil@LandStack#2026');
 
   // Registration form state
   const [regName, setRegName] = useState('');
@@ -205,6 +207,10 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
         <span>Back to Public Gateway</span>
       </button>
 
+      <div className="absolute top-6 right-6">
+        <LanguageSelector variant="light" compact={false} />
+      </div>
+
       <div className="w-full max-w-lg bg-white border border-slate-200 p-8 rounded-3xl shadow-xl space-y-6">
         
         {/* Header */}
@@ -277,6 +283,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
                   className="w-full bg-slate-50 border border-slate-300 text-slate-900 pl-9 pr-4 py-2.5 rounded-xl focus:border-emerald-600 focus:outline-none font-semibold"
                   required
                 />
@@ -301,6 +308,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
                 placeholder="e.g. Rajendra Patil"
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
+                autoComplete="name"
                 className="w-full bg-slate-50 border border-slate-300 text-slate-900 px-4 py-2.5 rounded-xl focus:border-emerald-600 focus:outline-none font-semibold"
                 required
               />
@@ -314,6 +322,7 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
                   placeholder="name@example.com"
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
+                  autoComplete="email"
                   className="w-full bg-slate-50 border border-slate-300 text-slate-900 px-3 py-2.5 rounded-xl focus:border-emerald-600 focus:outline-none font-semibold"
                   required
                 />
@@ -323,9 +332,11 @@ export const ResidentLogin: React.FC<ResidentLoginProps> = ({
                 <label className="block text-slate-700 font-bold mb-1">Password</label>
                 <input
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="Min 8 chars (e.g. Patil@2026#)"
                   value={regPassword}
                   onChange={(e) => setRegPassword(e.target.value)}
+                  autoComplete="new-password"
+                  minLength={6}
                   className="w-full bg-slate-50 border border-slate-300 text-slate-900 px-3 py-2.5 rounded-xl focus:border-emerald-600 focus:outline-none font-semibold"
                   required
                 />

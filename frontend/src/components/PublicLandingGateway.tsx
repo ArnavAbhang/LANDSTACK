@@ -1,11 +1,15 @@
 import React from 'react';
 import { Layers, ShieldCheck, MapPin, Building2, Cpu, UserCheck, ArrowRight, Lock, FileText, CheckCircle2, Globe, Scale, Activity } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { LanguageSelector } from './LanguageSelector';
 
 interface PublicLandingGatewayProps {
   onSelectPortal: (portal: 'RESIDENT' | 'GOVERNMENT') => void;
 }
 
 export const PublicLandingGateway: React.FC<PublicLandingGatewayProps> = ({ onSelectPortal }) => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
       
@@ -13,14 +17,14 @@ export const PublicLandingGateway: React.FC<PublicLandingGatewayProps> = ({ onSe
       <div className="bg-blue-950 text-white text-[11px] px-6 lg:px-12 py-1.5 flex items-center justify-between font-semibold border-b border-blue-900">
         <div className="flex items-center gap-2">
           <Globe className="w-3.5 h-3.5 text-blue-300" />
-          <span>Government of India Digital Public Infrastructure | Integrated Land Governance</span>
+          <span>{t('gov_banner_title', 'Government of India Digital Public Infrastructure | Integrated Land Governance')}</span>
         </div>
         <div className="flex items-center gap-4 text-blue-200">
-          <span>Accessibility</span>
-          <span>•</span>
-          <span>Help & Support</span>
-          <span>•</span>
-          <span>Language: English</span>
+          <span className="hidden md:inline">{t('accessibility', 'Accessibility')}</span>
+          <span className="hidden md:inline">•</span>
+          <span className="hidden md:inline">{t('help_support', 'Help & Support')}</span>
+          <span className="hidden md:inline">•</span>
+          <LanguageSelector variant="dark" compact={false} />
         </div>
       </div>
 
@@ -34,11 +38,11 @@ export const PublicLandingGateway: React.FC<PublicLandingGatewayProps> = ({ onSe
             <h1 className="font-black text-slate-900 text-xl tracking-tight flex items-center gap-2">
               <span>LAND STACK</span>
               <span className="text-[10px] bg-blue-50 text-blue-800 px-2.5 py-0.5 rounded-full font-extrabold border border-blue-200">
-                Official DPI Platform
+                {t('dpi_platform_badge', 'Official DPI Platform')}
               </span>
             </h1>
             <p className="text-xs text-slate-600 font-medium hidden sm:block">
-              Integrated Digital Land Governance
+              {t('hero_badge', 'Integrated Digital Land Governance')}
             </p>
           </div>
         </div>
@@ -48,15 +52,18 @@ export const PublicLandingGateway: React.FC<PublicLandingGatewayProps> = ({ onSe
             onClick={() => onSelectPortal('RESIDENT')}
             className="font-bold text-slate-700 hover:text-blue-900 px-4 py-2.5 transition-colors rounded-xl border border-slate-200 hover:border-slate-300 bg-white"
           >
-            Resident Portal
+            {t('resident_portal', 'Resident Portal')}
           </button>
           <button
             onClick={() => onSelectPortal('GOVERNMENT')}
             className="bg-blue-900 hover:bg-blue-800 text-white font-extrabold px-5 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2"
           >
             <Lock className="w-3.5 h-3.5 text-blue-200" />
-            <span>Government Portal</span>
+            <span>{t('government_portal', 'Government Portal')}</span>
           </button>
+          <div className="hidden sm:block">
+            <LanguageSelector variant="light" compact={false} />
+          </div>
         </div>
       </header>
 
